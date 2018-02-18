@@ -7,7 +7,7 @@ https://gist.github.com/Nagriar/69d00251b8e945dcad17a8de17d38869
 ## Synopsis
 
 ```
-qex [-h,--help] [-r RANGE] [-n NUM] FILE [FILE ...]
+qex [-h] [-r RANGE] [-n NUM] FILE [FILE ...]
 ```
 
 ## Overview
@@ -64,7 +64,7 @@ If no input is given the qex, it prints its usage and exit.
 
 ```bash
 $ qex
-Usage: qex [-h,--help] [-r RANGE] [-n NUM] FILE [FILE ...]
+Usage: qex [-h] [-r RANGE] [-n NUM] FILE [FILE ...]
 ```
 
 ## Design & Implementation Details
@@ -75,10 +75,14 @@ indexing and searching.
 
 ### Indexing
 
-TODO:
-  * design overview
-  * data structures, complexity and algorithms
-  * index storage and retrieval
+The indexing is done using two data structures:
+  * **Arrays** to store the extraction parameters such as years, minutes and
+    such. All are integer data with relatively low boudaries so array seams
+    appropriate;
+  * **Trie** to store strings data. It has the advantage to have a relatively
+    low footprint to store strings and the insertion in such data structure has
+    a complexity of O(n*m), n being the number of strings to insert and m being
+    the average size of a string.
 
 ### Search
 
