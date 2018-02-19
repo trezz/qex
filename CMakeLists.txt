@@ -17,6 +17,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -pedantic")
 
 add_executable(qex
   ${CMAKE_SOURCE_DIR}/src/main.cpp
+  ${CMAKE_SOURCE_DIR}/src/qex.cpp
+  ${CMAKE_SOURCE_DIR}/src/trie.cpp
 )
 
 install(
