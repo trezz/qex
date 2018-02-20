@@ -160,7 +160,7 @@ int main(int argc, char** argv)
   { range = new qex::Range(args.range); }
 
   /* index input files */
-  qex::Qex program(args.num != 0, args.range);
+  qex::Qex program(args.range);
   std::unordered_map<std::string, char*> buffers;
 
   for (char* file : args.files)
@@ -200,7 +200,11 @@ int main(int argc, char** argv)
   {
     std::cout << program.num_distinct_queries() << std::endl;
   }
-
+  else
+  {
+    program.build_most_popular_queries_set();
+    program.print_nth_most_popular_queries(args.num);
+  }
 
   for (auto& file_buffer : buffers)
   { delete file_buffer.second; }

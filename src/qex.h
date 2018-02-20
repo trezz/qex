@@ -6,6 +6,7 @@
 
 #include <unordered_set>
 #include <unordered_map>
+#include <map>
 #include <string>
 
 /* Year at index 0 */
@@ -44,12 +45,13 @@ struct Range
 class Qex
 {
   public:
-    typedef std::unordered_set<std::string> QuerySet;
-      /**< queries set */
+    typedef std::unordered_map<std::string, size_t> QueryMap;
+      /**< queries map with their number of occurrence as values */
+    typedef std::map<size_t, std::unordered_set<std::string>> PopularQueriesMap;
 
   public:
     /** Constructor */
-    Qex (bool do_map_unique_queries, char* range = nullptr);
+    Qex (char* range = nullptr);
     /** Destructor */
     virtual ~Qex ();
 
@@ -69,15 +71,16 @@ class Qex
 
     size_t num_distinct_queries () const;
 
-  private:
-    bool _do_map_unique_queries;
-      /**< If true, register each queries in a map with their number of
-       * occurence as value. */
+    void build_most_popular_queries_set ();
+    void print_nth_most_popular_queries (size_t num) const;
 
+  private:
     Range _range;
 
     /* Queries in requested range */
-    QuerySet _queries_in_range;
+    QueryMap _queries_in_range;
+
+    PopularQueriesMap _popular_queries;
 };
 
 } /* namespace qex */
