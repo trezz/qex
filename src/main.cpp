@@ -196,6 +196,10 @@ int main(int argc, char** argv)
   }
 
   /* extract queries based on input arguments */
+  if (args.num == 0)
+  {
+    std::cout << program.num_distinct_queries() << std::endl;
+  }
 
 
   for (auto& file_buffer : buffers)

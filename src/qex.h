@@ -25,7 +25,7 @@ namespace qex
 
 struct Range
 {
-  Range (const char* range);
+  Range (char* range);
   bool operator == (const Range& other) const;
   bool operator != (const Range& other) const;
 
@@ -36,7 +36,7 @@ struct Range
   int minute;
   int second;
 
-  const char* end;
+  char* end;
     /**< Pointer on the character following the parsed range */
 };
 
@@ -44,12 +44,12 @@ struct Range
 class Qex
 {
   public:
-    typedef std::unordered_set<const char*> QuerySet;
+    typedef std::unordered_set<std::string> QuerySet;
       /**< queries set */
 
   public:
     /** Constructor */
-    Qex (bool do_map_unique_queries, const char* range = nullptr);
+    Qex (bool do_map_unique_queries, char* range = nullptr);
     /** Destructor */
     virtual ~Qex ();
 
@@ -67,16 +67,14 @@ class Qex
      */
     char* index_tsv_line (char* line, size_t lineno);
 
+    size_t num_distinct_queries () const;
+
   private:
     bool _do_map_unique_queries;
       /**< If true, register each queries in a map with their number of
        * occurence as value. */
 
     Range _range;
-
-    std::unordered_map<std::string, size_t> _num_unique_queries;
-      /**< Mapping of number of occurrence of the same query in the input
-       * files. */
 
     /* Queries in requested range */
     QuerySet _queries_in_range;

@@ -5,11 +5,11 @@
 namespace qex
 {
 
-Range::Range (const char* range)
+Range::Range (char* range)
 {
   /* fill a table of 6 dates with the string range. This loop accepts wildcards
    * characters (*) */
-  std::vector<int> date(6, -1);
+  int date[6] = {-1, -1, -1, -1, -1, -1};
   char* next_token = nullptr;
 
   for (size_t i = 0; range && i < 6; ++i)
@@ -18,13 +18,18 @@ Range::Range (const char* range)
     if (range == next_token && *range == '*')
     {
       /* skipping wildcard character '*' + '-' */
-      range += 2;
+      date[i] = -1;
+      range++;
+      if (*range != 0)
+        range++;
     }
-    else if (next_token == nullptr)
-    { break; }
+    else if (*next_token == 0)
+    {
+      break;
+    }
     else
     {
-      /* step over separator character such as '-', ' ', '\t' or ':' */
+      /* eventually step over separator character such as '-', ' ', '\t' or ':' */
       range = next_token + 1;
     }
   }
@@ -55,7 +60,7 @@ bool Range::operator != (const Range& other) const
 
 /*****************************************************************************/
 
-Qex::Qex (bool do_map_unique_queries, const char* range /* = nullptr */)
+Qex::Qex (bool do_map_unique_queries, char* range /* = nullptr */)
   : _do_map_unique_queries(do_map_unique_queries),
     _range(range)
 { }
@@ -66,6 +71,7 @@ Qex::~Qex ()
 char* Qex::index_tsv_line (char* line, size_t lineno)
 {
   Range range(line);
+  line = range.end;
 
   /* next_token should point to the character preceding the query, which
    * is `\t` in a TSV file. If not then an invalid line was given as input
@@ -90,11 +96,7 @@ char* Qex::index_tsv_line (char* line, size_t lineno)
    * requested user one, do nothing more. */
   if (range == _range)
   {
-    if (_do_map_unique_queries)
-    {
-      ++_num_unique_queries[query];
-    }
-    else
+    if (!_do_map_unique_queries)
     {
       _queries_in_range.insert(query);
     }
@@ -102,6 +104,11 @@ char* Qex::index_tsv_line (char* line, size_t lineno)
 
   /* returns null if this is the end of file */
   return *line != 0 ? line : 0;
+}
+
+size_t Qex::num_distinct_queries () const
+{
+  return _queries_in_range.size();
 }
 
 
