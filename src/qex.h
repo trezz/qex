@@ -16,12 +16,29 @@
 /* Obvious named date values */
 #define QEX_NUM_MONTHS  12
 #define QEX_NUM_DAYS    31
-#define QEX_NUM_HOURS   12
+#define QEX_NUM_HOURS   24
 #define QEX_NUM_MINUTES 60
 #define QEX_NUM_SECONDS 60
 
 namespace qex
 {
+
+struct Range
+{
+  Range (const char* range);
+  bool operator == (const Range& other) const;
+  bool operator != (const Range& other) const;
+
+  int year;
+  int month;
+  int day;
+  int hour;
+  int minute;
+  int second;
+
+  const char* end;
+    /**< Pointer on the character following the parsed range */
+};
 
 /** Program main class */
 class Qex
@@ -32,7 +49,7 @@ class Qex
 
   public:
     /** Constructor */
-    Qex (bool do_map_unique_queries);
+    Qex (bool do_map_unique_queries, const char* range = nullptr);
     /** Destructor */
     virtual ~Qex ();
 
@@ -42,28 +59,27 @@ class Qex
      *
      * Throws std::exception on parsing error.
      *
-     * \param [in] line Pointer on a file line formatted as described above.
+     * \param [in] line   Pointer on a file line formatted as described above.
+     * \param [in] lineno Line numer being processed.
+     *
      * \return a pointer on the next line to index, 0 if end of file is
      *         reached.
      */
-    char* index_tsv_line (char* line);
+    char* index_tsv_line (char* line, size_t lineno);
 
   private:
     bool _do_map_unique_queries;
       /**< If true, register each queries in a map with their number of
        * occurence as value. */
 
+    Range _range;
+
     std::unordered_map<std::string, size_t> _num_unique_queries;
       /**< Mapping of number of occurrence of the same query in the input
        * files. */
 
-    /* Queries indexed per year, month, day etc... */
-    QuerySet _per_year[QEX_NUM_YEARS];
-    QuerySet _per_month[QEX_NUM_MONTHS];
-    QuerySet _per_day[QEX_NUM_DAYS];
-    QuerySet _per_hour[QEX_NUM_HOURS];
-    QuerySet _per_minute[QEX_NUM_MINUTES];
-    QuerySet _per_second[QEX_NUM_SECONDS];
+    /* Queries in requested range */
+    QuerySet _queries_in_range;
 };
 
 } /* namespace qex */

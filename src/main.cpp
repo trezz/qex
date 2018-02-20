@@ -154,8 +154,13 @@ int main(int argc, char** argv)
     exit(1);
   }
 
+  /* create range object from input argument if present */
+  qex::Range* range = nullptr;
+  if (args.range != nullptr)
+  { range = new qex::Range(args.range); }
+
   /* index input files */
-  qex::Qex program(args.num != 0);
+  qex::Qex program(args.num != 0, args.range);
   std::unordered_map<std::string, char*> buffers;
 
   for (char* file : args.files)
@@ -174,8 +179,11 @@ int main(int argc, char** argv)
     /* index the file using Qex object and catch eventual errors */
     try
     {
-      for (char* line = buffers[file]; line; line = program.index_tsv_line(line))
-      { continue; }
+      size_t lineno = 1;
+      for (char* line = buffers[file];
+           line;
+           line = program.index_tsv_line(line, lineno))
+      { ++lineno; }
     }
     catch (std::string& msg)
     {
@@ -187,8 +195,14 @@ int main(int argc, char** argv)
     }
   }
 
+  /* extract queries based on input arguments */
+
+
   for (auto& file_buffer : buffers)
   { delete file_buffer.second; }
+
+  if (range)
+  { delete range; }
 
   return 0;
 }
