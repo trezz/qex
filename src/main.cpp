@@ -6,6 +6,7 @@
 #include <string.h>
 
 #include "qex.h"
+#include "trie.h"
 
 /** Holds the inputs arguments. */
 struct InputArgs
@@ -155,18 +156,36 @@ int main(int argc, char** argv)
   }
 
   /* index input files */
-  qex::Qex program;
+  qex::Qex program(args.num != 0);
+  std::unordered_map<std::string, char*> buffers;
+
   for (char* file : args.files)
   {
-    std::string buffer;
-    std::ifstream ifs{file};
+    /* read whole file content into buffer */
+    std::ifstream ifs;
+    size_t length;
+    ifs.open(file);
+    ifs.seekg(0, std::ios::end);
+    length = ifs.tellg();
+    ifs.seekg(0, std::ios::beg);
+    buffers[file] = new char[length];
+    ifs.read(buffers[file], length);
+    ifs.close();
 
-    while (ifs.good())
+    /* index the file using Qex object and catch eventual errors */
+    try
     {
-      std::getline(ifs, buffer);
-      program.index_tsv_line(buffer.c_str());
+      for (char* line = buffers[file]; line; line = program.index_tsv_line(line))
+      { continue; }
+    }
+    catch (std::exception& e)
+    {
+      std::cerr << "error: " << e.what() << std::endl;
     }
   }
+
+  for (auto& file_buffer : buffers)
+  { delete file_buffer.second; }
 
   return 0;
 }
