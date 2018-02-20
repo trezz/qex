@@ -23,7 +23,7 @@ char* Qex::index_tsv_line (char* line)
     date[i] = strtoul(line, &next_token, 10);
     if (line == next_token || next_token == nullptr)
     {
-      throw std::exception("ill-formed line detected. Not a valid timestamp");
+      throw std::string("ill-formed line detected. Not a valid timestamp");
     }
     /* step over separator character such as '-', ' ', '\t' or ':' */
     line = next_token + 1;
@@ -35,7 +35,7 @@ char* Qex::index_tsv_line (char* line)
    * The query is pointed by line here.
    */
   if (*next_token != '\t')
-  { throw std::exception("ill-formed line detected. Query not found"); }
+  { throw std::string("ill-formed line detected. Query not found"); }
   char* query = line;
 
   /* remove endline characters and step to next line */
@@ -57,7 +57,7 @@ char* Qex::index_tsv_line (char* line)
       date[3] >= QEX_NUM_HOURS ||
       date[4] >= QEX_NUM_MINUTES ||
       date[5] >= QEX_NUM_SECONDS)
-  { throw std::exception("ill-formed line detected. Not a valid timestamp"); }
+  { throw std::string("ill-formed line detected. Not a valid timestamp"); }
 
   /* reference query leaf node from timestamp-indexed buffers */
   _per_year[date[0] - QEX_FIRST_YEAR].insert(query);

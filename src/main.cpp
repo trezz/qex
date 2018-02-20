@@ -6,7 +6,6 @@
 #include <string.h>
 
 #include "qex.h"
-#include "trie.h"
 
 /** Holds the inputs arguments. */
 struct InputArgs
@@ -177,6 +176,10 @@ int main(int argc, char** argv)
     {
       for (char* line = buffers[file]; line; line = program.index_tsv_line(line))
       { continue; }
+    }
+    catch (std::string& msg)
+    {
+      std::cerr << "error: " << msg << std::endl;
     }
     catch (std::exception& e)
     {
