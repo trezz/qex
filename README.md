@@ -4,6 +4,21 @@ Queries extractor tool. Built for the Algolia tech test. The goal of this test
 is here:
 https://gist.github.com/Nagriar/69d00251b8e945dcad17a8de17d38869
 
+## Build Guide
+
+qex is built using CMake. It requires 'cmake' and a C++ compiler to be
+installed on the host computer.
+
+To build qex, follow these steps:
+
+```bash
+$ mkdir build && cd build
+$ cmake ..
+$ cmake --build .
+```
+
+The `qex` binary is expected to be produced in `<ROOT>/build/qex`.
+
 ## Synopsis
 
 ```
@@ -66,26 +81,3 @@ If no input is given the qex, it prints its usage and exit.
 $ qex
 Usage: qex [-h] [-r RANGE] [-n NUM] FILE [FILE ...]
 ```
-
-## Design & Implementation Details
-
-The job of qex is to extract queries from an index and output them on the
-standard output. Thus, the its architecture is divided into two distinct tasks;
-indexing and searching.
-
-### Indexing
-
-The indexing is done using two data structures:
-  * **Arrays** to store the extraction parameters such as years, minutes and
-    such. All are integer data with relatively low boudaries so array seams
-    appropriate;
-  * **Trie** to store strings data. It has the advantage to have a relatively
-    low footprint to store strings and the insertion in such data structure has
-    a complexity of O(n*m), n being the number of strings to insert and m being
-    the average size of a string.
-
-### Search
-
-TODO:
-  * design overview
-  * data structures, complexity and algorithms

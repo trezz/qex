@@ -1,6 +1,7 @@
 /**
  *
  */
+
 #ifndef _QEX_QEX_H_
 #define _QEX_QEX_H_
 
@@ -8,6 +9,8 @@
 #include <unordered_map>
 #include <map>
 #include <string>
+
+#include "range.h"
 
 /* Year at index 0 */
 #define QEX_FIRST_YEAR  1970
@@ -23,23 +26,6 @@
 
 namespace qex
 {
-
-struct Range
-{
-  Range (char* range);
-  bool operator == (const Range& other) const;
-  bool operator != (const Range& other) const;
-
-  int year;
-  int month;
-  int day;
-  int hour;
-  int minute;
-  int second;
-
-  char* end;
-    /**< Pointer on the character following the parsed range */
-};
 
 /** Program main class */
 class Qex
