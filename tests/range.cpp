@@ -4,7 +4,7 @@
 
 using namespace qex;
 
-TEST(Range, create)
+TEST(Range, valid)
 {
   Range* r = nullptr;
 
@@ -31,6 +31,11 @@ TEST(Range, create)
   ASSERT_EQ(r->year, -1); ASSERT_EQ(r->month, 3); ASSERT_EQ(r->day, -1);
   ASSERT_EQ(r->hour, 23); ASSERT_EQ(r->minute, -1); ASSERT_EQ(r->second, 12);
   ASSERT_NO_THROW(delete r);
+}
+
+TEST(Range, invalid)
+{
+  Range* r = nullptr;
 
   /* null range */
   ASSERT_NO_THROW(r = new Range(nullptr));
@@ -62,4 +67,12 @@ TEST(Range, create)
   ASSERT_EQ(r->year, 1); ASSERT_EQ(r->month, 2); ASSERT_EQ(r->day, 3);
   ASSERT_EQ(r->hour, 4); ASSERT_EQ(r->minute, -1); ASSERT_EQ(r->second, -1);
   ASSERT_NO_THROW(delete r);
+}
+
+TEST(Range, equality)
+{
+  ASSERT_EQ(Range(""), Range(""));
+  ASSERT_EQ(Range(""), Range("1"));
+  ASSERT_EQ(Range("1-2-3 4:5:6"), Range("1-*-3 4:5:*"));
+  ASSERT_NE(Range("1-2-3"), Range("1-*-2234"));
 }

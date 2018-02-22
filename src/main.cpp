@@ -172,8 +172,9 @@ int main(int argc, char** argv)
     ifs.seekg(0, std::ios::end);
     length = ifs.tellg();
     ifs.seekg(0, std::ios::beg);
-    buffers[file] = new char[length];
+    buffers[file] = new char[length + 1];
     ifs.read(buffers[file], length);
+    buffers[file][length] = 0;
     ifs.close();
 
     /* index the file using Qex object and catch eventual errors */
@@ -207,7 +208,7 @@ int main(int argc, char** argv)
   }
 
   for (auto& file_buffer : buffers)
-  { delete file_buffer.second; }
+  { delete[] file_buffer.second; }
 
   if (range)
   { delete range; }

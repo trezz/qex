@@ -1,7 +1,3 @@
-/**
- *
- */
-
 #ifndef _QEX_QEX_H_
 #define _QEX_QEX_H_
 
@@ -11,18 +7,6 @@
 #include <string_view>
 
 #include "range.h"
-
-/* Year at index 0 */
-#define QEX_FIRST_YEAR  1970
-/* Will work until 2070 */
-#define QEX_NUM_YEARS   100
-
-/* Obvious named date values */
-#define QEX_NUM_MONTHS  12
-#define QEX_NUM_DAYS    31
-#define QEX_NUM_HOURS   24
-#define QEX_NUM_MINUTES 60
-#define QEX_NUM_SECONDS 60
 
 namespace qex
 {
@@ -34,6 +18,7 @@ class Qex
     typedef std::unordered_map<std::string_view, size_t> QueryMap;
       /**< queries map with their number of occurrence as values */
     typedef std::map<size_t, std::unordered_set<std::string_view>> PopularQueriesMap;
+      /**< most popular queries map, ordered by number of occurence */
 
   public:
     /** Constructor */
@@ -55,18 +40,23 @@ class Qex
      */
     char* index_tsv_line (char* line, size_t lineno);
 
+    /** Returns the number of distinct queries indexed */
     size_t num_distinct_queries () const;
 
+    /** Build the most popular queries set from the indexed queries */
     void build_most_popular_queries_set ();
+
+    /** print the `num` number of most popular queries in descending order
+     * on stdout. */
     void print_nth_most_popular_queries (size_t num) const;
 
   private:
     Range _range;
-
-    /* Queries in requested range */
+      /**< User-defined range given as constructor's input argument */
     QueryMap _queries_in_range;
-
+      /**< Queries in requested range */
     PopularQueriesMap _popular_queries;
+      /**< Popular queries ordered by number of occurence */
 };
 
 } /* namespace qex */
