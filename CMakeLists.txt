@@ -8,6 +8,7 @@ set (CMAKE_CXX_STANDARD 17)
 
 # Additional cmake modules path
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+include(GTest)
 
 # Default installation directory
 set(CMAKE_INSTALL_DIR "${CMAKE_BINARY_DIR}/_install")
@@ -26,4 +27,21 @@ install(
     qex
   DESTINATION
     "${CMAKE_INSTALL_DIR}"
+)
+
+# Testing #####################################################################
+
+add_executable(qex-tests
+  ${CMAKE_SOURCE_DIR}/tests/range.cpp
+  ${CMAKE_SOURCE_DIR}/tests/main.cpp
+  ${CMAKE_SOURCE_DIR}/src/range.cpp
+)
+
+target_link_libraries(qex-tests
+  gtest_main
+)
+
+target_include_directories(qex-tests
+  PRIVATE
+  "${CMAKE_SOURCE_DIR}/src"
 )
