@@ -5,7 +5,7 @@
 namespace qex
 {
 
-Range::Range (char* range)
+Range::Range (const char* range)
 {
   /* fill a table of 6 dates with the string range. This loop accepts wildcards
    * characters (*) */
@@ -22,6 +22,13 @@ Range::Range (char* range)
       range++;
       if (*range != 0)
         range++;
+    }
+    else if (range == next_token)
+    {
+      /* invalid character found where integer conversion should occured.
+       * reset current date value to -1 and stop conversion. */
+      date[i] = -1;
+      break;
     }
     else if (*next_token == 0)
     {
