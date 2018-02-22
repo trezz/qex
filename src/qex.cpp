@@ -27,9 +27,12 @@ char* Qex::index_tsv_line (char* line, size_t lineno)
           + ": ill-formed line detected. Query not found"); }
   char* query = ++line;
 
-  /* remove endline characters and step to next line */
+  /* go to end of query and save its length */
   while (*line != '\n' && *line != '\r' && *line != 0)
   { ++line; }
+  size_t query_size = line - query;
+
+  /* remove endline characters and step to next line */
   while (*line == '\n' || *line == '\r')
   {
     *line = 0;
@@ -40,7 +43,7 @@ char* Qex::index_tsv_line (char* line, size_t lineno)
    * requested user one, do nothing more. */
   if (range == _range)
   {
-    _queries_in_range[query] += 1;
+    _queries_in_range[std::string_view(query, query_size)] += 1;
   }
 
   /* returns null if this is the end of file */
@@ -65,7 +68,7 @@ void Qex::print_nth_most_popular_queries (size_t num) const
   while (--end != begin)
   {
     const auto& num_queries = *end;
-    for (const std::string& query : num_queries.second)
+    for (const std::string_view& query : num_queries.second)
     {
       if (num-- == 0)
       { return; }

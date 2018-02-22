@@ -8,7 +8,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <map>
-#include <string>
+#include <string_view>
 
 #include "range.h"
 
@@ -31,9 +31,9 @@ namespace qex
 class Qex
 {
   public:
-    typedef std::unordered_map<std::string, size_t> QueryMap;
+    typedef std::unordered_map<std::string_view, size_t> QueryMap;
       /**< queries map with their number of occurrence as values */
-    typedef std::map<size_t, std::unordered_set<std::string>> PopularQueriesMap;
+    typedef std::map<size_t, std::unordered_set<std::string_view>> PopularQueriesMap;
 
   public:
     /** Constructor */
