@@ -81,3 +81,12 @@ If no input is given the qex, it prints its usage and exit.
 $ qex
 Usage: qex [-h] [-r RANGE] [-n NUM] FILE [FILE ...]
 ```
+
+## Complexity
+
+Let **n** be the number of queries in the input file(s) and **m** be the
+number of indexed queries, which are queries in the input date range.
+Here is the space and time complexity of qex:
+
+* Space: O(n + 2m)
+* Time: O(n + 2m*log(m))

@@ -45,3 +45,20 @@ target_include_directories(qex-tests
   PRIVATE
   "${CMAKE_SOURCE_DIR}/src"
 )
+
+enable_testing()
+
+# Unit tests
+add_test(qex-gtest qex-tests)
+
+# End 2 end tests.
+add_test(e2e_1
+  qex "${CMAKE_SOURCE_DIR}/tests/small.tsv")
+add_test(e2e_2
+  qex "${CMAKE_SOURCE_DIR}/tests/small.tsv" -n 3)
+add_test(e2e_3
+  qex "${CMAKE_SOURCE_DIR}/tests/small.tsv" -r "2015-*-01")
+add_test(e2e_4
+  qex "${CMAKE_SOURCE_DIR}/tests/small.tsv" -r "2015" -n 30)
+add_test(e2e_5
+  qex "${CMAKE_SOURCE_DIR}/tests/small.tsv" -r "")
