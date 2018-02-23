@@ -89,4 +89,4 @@ number of indexed queries, which are queries in the input date range.
 Here is the space and time complexity of qex:
 
 * Space: O(n + 2m)
-* Time: O(n + 2m*log(m))
+* Time: O(n + m + m*log(m))
