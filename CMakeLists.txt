@@ -62,3 +62,9 @@ add_test(e2e_4
   qex "${CMAKE_SOURCE_DIR}/tests/small.tsv" -r "2015" -n 30)
 add_test(e2e_5
   qex "${CMAKE_SOURCE_DIR}/tests/small.tsv" -r "")
+add_test(e2e_6
+  qex -n 10)
+add_test(e2e_7
+  qex -r "2015")
+add_test(e2e_8
+  qex -n 78 -r "*-*-01")

@@ -65,8 +65,9 @@ void Qex::print_nth_most_popular_queries (size_t num) const
 {
   PopularQueriesMap::const_iterator begin = _popular_queries.begin(),
                                     end = _popular_queries.end();
-  while (--end != begin)
+  while (end != begin)
   {
+    --end;
     const auto& num_queries = *end;
     for (const std::string_view& query : num_queries.second)
     {
