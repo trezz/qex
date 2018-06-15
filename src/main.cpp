@@ -154,11 +154,6 @@ int main(int argc, char** argv)
     exit(1);
   }
 
-  /* create range object from input argument if present */
-  qex::Range* range = nullptr;
-  if (args.range != nullptr)
-  { range = new qex::Range(args.range); }
-
   /* index input files */
   qex::Qex program(args.range);
   std::unordered_map<std::string, char*> buffers;
@@ -209,9 +204,6 @@ int main(int argc, char** argv)
 
   for (auto& file_buffer : buffers)
   { delete[] file_buffer.second; }
-
-  if (range)
-  { delete range; }
 
   return 0;
 }

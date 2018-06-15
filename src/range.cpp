@@ -5,7 +5,15 @@
 namespace qex
 {
 
-Range::Range (const char* range)
+Range::Range ()
+  : year(-1), month(-1), day(-1),
+    hour(-1), minute(-1), second(-1)
+{ }
+
+Range::Range (const char* timestamp)
+{ parse(timestamp); }
+
+void Range::parse (const char* range)
 {
   /* fill a table of 6 dates with the string range. This loop accepts wildcards
    * characters (*) */
@@ -50,20 +58,6 @@ Range::Range (const char* range)
   minute = date[4];
   second = date[5];
 }
-
-bool Range::operator == (const Range& other) const
-{
-  return
-    (year == -1   || other.year == -1   || year == other.year     ) &&
-    (month == -1  || other.month == -1  || month == other.month   ) &&
-    (day == -1    || other.day == -1    || day == other.day       ) &&
-    (hour == -1   || other.hour == -1   || hour == other.hour     ) &&
-    (minute == -1 || other.minute == -1 || minute == other.minute ) &&
-    (second == -1 || other.second == -1 || second == other.second );
-}
-
-bool Range::operator != (const Range& other) const
-{ return ! (*this == other); }
 
 } /* namespace qex */
 

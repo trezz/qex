@@ -35,6 +35,7 @@ add_executable(qex-tests
   ${CMAKE_SOURCE_DIR}/tests/range.cpp
   ${CMAKE_SOURCE_DIR}/tests/main.cpp
   ${CMAKE_SOURCE_DIR}/src/range.cpp
+  ${CMAKE_SOURCE_DIR}/src/qex.cpp
 )
 
 target_link_libraries(qex-tests

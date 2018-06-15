@@ -18,13 +18,18 @@ namespace qex
  */
 struct Range
 {
-  /** Constructor with a timestamp character string as argument. 
-   * It fills its integer attributes by converting the input string values. */
-  Range (const char* range);
+  /** Constructor which define the range as wildcard ('*') for all timestamp
+   * fields. */
+  Range ();
+  /** Constructor with an input string timestamp as argument */
+  Range (const char* timestamp);
+  
 
-  /* Comparison operators */
-  bool operator == (const Range& other) const;
-  bool operator != (const Range& other) const;
+  /** Resilient timestamp parser which convert a string timestamp into a
+   * Range object. On parsing error on one of the timestamp fields, the
+   * erroneous field is considered to be '*', as for all the following fields.
+   * The previous valid fields are preserved. */
+  void parse (const char* range);
 
   /* First part of the timestamp as integer value. */
   int year, month, day;
