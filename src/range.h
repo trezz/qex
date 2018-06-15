@@ -4,6 +4,13 @@
 namespace qex
 {
 
+/** Convert a string into an int. Convert as many character as possible and
+ * returns a pointer on the next non-integer character in s via the next
+ * pointer.
+ *
+ * Note that leading spaces are trimmed. */
+int toint(const char* s, char** next);
+
 /**
  * Declaration of the Range class with represents a timestamp formatted as
  * follows:

@@ -5,6 +5,28 @@
 
 using namespace qex;
 
+TEST(Range, toint)
+{
+  ASSERT_EQ(12, toint("12", NULL));
+  ASSERT_EQ(0, toint("toto", NULL));
+  ASSERT_EQ(4, toint("4", NULL));
+  ASSERT_EQ(123456789, toint("123456789", NULL));
+  ASSERT_EQ(2017, toint("2017-40", NULL));
+
+  /* I know this is bad but since this test never actually modifies the string
+   * it does no harm. */
+  char* s = (char*) "1987-06-12";
+
+  ASSERT_EQ(1987, toint(s, &s));
+  ASSERT_EQ('-', *s);
+  ++s;
+  ASSERT_EQ(6, toint(s, &s));
+  ASSERT_EQ('-', *s);
+  ++s;
+  ASSERT_EQ(12, toint(s, &s));
+  ASSERT_EQ(0, toint(s, &s));
+}
+
 TEST(Range, valid)
 {
   Range r;

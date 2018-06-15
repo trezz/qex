@@ -5,6 +5,25 @@
 namespace qex
 {
 
+int toint(const char* s, char** next)
+{
+  int result = 0;
+
+  while (s && (*s == ' ' || *s == '\t'))
+    ++s;
+
+  for (; s && *s >= '0' && *s <= '9'; ++s)
+  {
+    result *= 10;
+    result += (*s - '0');
+  }
+
+  if (next)
+  { *next = (char*) s; }
+
+  return result;
+}
+
 Range::Range ()
   : year(-1), month(-1), day(-1),
     hour(-1), minute(-1), second(-1)
@@ -22,7 +41,7 @@ void Range::parse (const char* range)
 
   for (size_t i = 0; range && i < 6; ++i)
   {
-    date[i] = strtoul(range, &next_token, 10);
+    date[i] = toint(range, &next_token);
     if (range == next_token && *range == '*')
     {
       /* skipping wildcard character '*' + '-' */
